@@ -25,18 +25,11 @@ import { QuickActions } from "./QuickActions";
 import { RecentTransactions } from "./RecentTransactions";
 import BackgroundAnimation from "@/components/BackgroundAnimation";
 import { SwapModal } from "../swap/SwapModal";
-import { Header } from "@/layouts/Header";
+import { AddFundsModal } from "../funds/AddFundsModal";
 
 export default function DashboardLayout() {
   const [isSwapModalOpen, setIsSwapModalOpen] = useState(false);
-
-  const openSwapModal = () => {
-    setIsSwapModalOpen(true);
-  };
-
-  const closeSwapModal = () => {
-    setIsSwapModalOpen(false);
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-black">
@@ -54,7 +47,10 @@ export default function DashboardLayout() {
                 </p>
               </div>
               <div className="flex gap-2">
-                <Button className="bg-gradient-to-r mr-2 from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200">
+                <Button
+                  onClick={() => setIsModalOpen(true)}
+                  className="bg-gradient-to-r mr-2 from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200"
+                >
                   <Plus className="h-4 w-4" /> Add Funds
                 </Button>
                 <Button
@@ -250,6 +246,10 @@ export default function DashboardLayout() {
       </div>
 
       <SwapModal open={isSwapModalOpen} onOpenChange={setIsSwapModalOpen} />
+      <AddFundsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }

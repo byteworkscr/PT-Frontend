@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { tokens } from "@/lib/tokens";
 import { TokenIcon } from "@web3icons/react";
-import { TokenSelector } from "./TokenSelector";
+import { TokenSelector } from "../../TokenSelector";
 
 interface SwapModalProps {
   open: boolean;
