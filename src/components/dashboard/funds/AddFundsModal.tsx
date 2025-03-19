@@ -1,7 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowDown, Copy, X, ExternalLink } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import {
+  ArrowDown,
+  Copy,
+  X,
+  ExternalLink,
+  Shield,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { tokens } from "@/lib/tokens";
 import { TokenIcon } from "@web3icons/react";
 import { TokenSelector } from "@/components/TokenSelector";
@@ -31,6 +39,8 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
   const [amount, setAmount] = useState("");
   const [copied, setCopied] = useState(false);
   const [isTokenSelectorOpen, setIsTokenSelectorOpen] = useState(false);
+  const [selectedBank, setSelectedBank] = useState<string | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const walletAddresses: Record<string, string> = {
     BTC: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
@@ -40,10 +50,31 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
     USDC: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
   };
 
+  const banks = [
+    {
+      name: "Meru Bank",
+      icon: "/img/meru.png",
+      description: "Fast transfers with low fees",
+      color: "#0291fc",
+      accountNumber: "MERU1234567890",
+      routingNumber: "MERUBANK001",
+    },
+  ];
+
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(walletAddresses[selectedToken.symbol] || "");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleSelectBank = (bankName: string) => {
+    setSelectedBank(bankName);
+
+    if (bankName === "Meru Bank") {
+      const meruBank = banks.find((bank) => bank.name === "Meru Bank");
+      if (meruBank) {
+      }
+    }
   };
 
   const currentWalletAddress = walletAddresses[selectedToken.symbol] || "";
@@ -51,6 +82,7 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md p-0 overflow-hidden border-white/10 bg-gradient-to-b from-[#1B2735] to-[#090A0F] text-white">
+        <canvas ref={canvasRef} className="absolute inset-0 z-0 opacity-30" />
         <div className="relative z-10 bg-black/40 backdrop-blur-md overflow-hidden">
           <DialogHeader className="p-4 pb-2">
             <div className="flex justify-between items-center">
@@ -147,6 +179,15 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                 </div>
               </div>
 
+              <Alert className="bg-black/30 border border-[#0291fc]/30 text-white">
+                <Shield className="h-4 w-4 text-[#0291fc]" />
+                <AlertTitle>Secure Deposit</AlertTitle>
+                <AlertDescription>
+                  Only send {selectedToken.symbol} to this address. Sending any
+                  other coin may result in permanent loss.
+                </AlertDescription>
+              </Alert>
+
               <div className="bg-black/20 rounded-md border border-white/10 p-4 space-y-3">
                 <div className="relative w-full flex justify-center">
                   <div className="w-32 h-32 bg-white p-2 rounded-md flex items-center justify-center">
@@ -204,86 +245,36 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
             </TabsContent>
 
             <TabsContent value="transfer" className="p-4 space-y-4">
-              <div className="grid grid-cols-1 gap-4">
-                <div className="space-y-3">
-                  <div className="space-y-1">
-                    <Label
-                      htmlFor="bank-name"
-                      className="text-white/70 text-sm"
-                    >
-                      Bank Name
-                    </Label>
-                    <Input
-                      id="bank-name"
-                      placeholder="Enter your bank name"
-                      className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label
-                      htmlFor="account-number"
-                      className="text-white/70 text-sm"
-                    >
-                      Account Number
-                    </Label>
-                    <Input
-                      id="account-number"
-                      placeholder="Enter your account number"
-                      className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label
-                      htmlFor="routing-number"
-                      className="text-white/70 text-sm"
-                    >
-                      Routing Number
-                    </Label>
-                    <Input
-                      id="routing-number"
-                      placeholder="Enter your routing number"
-                      className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label
-                      htmlFor="transfer-amount"
-                      className="text-white/70 text-sm"
-                    >
-                      Amount
-                    </Label>
-                    <div className="flex items-center gap-2 p-2 bg-black/20 rounded-md border border-white/10">
-                      <div className="flex items-center px-2 py-1 bg-black/30 border border-white/10 rounded-md text-white/70">
-                        $
-                      </div>
-                      <div className="flex-1">
-                        <Input
-                          id="transfer-amount"
-                          type="number"
-                          min="0"
-                          placeholder="0.00"
-                          className="border-0 bg-transparent text-base font-medium focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
-                        />
-                      </div>
-                    </div>
-                  </div>
+              <Button className="relative flex w-full justify-start gap-4 p-6 bg-black/30 border-white/10 hover:bg-[#0291fc]/20 hover:border-[#0291fc]/30 text-white hover:text-gray-200 transition-all duration-200 rounded-md">
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-md border border-white/10 p-1"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #0291fc20, transparent)",
+                  }}
+                >
+                  <img
+                    src="/img/meru.png"
+                    alt="Meru Bank"
+                    className="h-10 w-10 object-contain"
+                  />
                 </div>
-              </div>
-
-              <Button
-                className="w-full bg-gradient-to-r from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200 h-10"
-                onClick={onClose}
-              >
-                Initiate Transfer
+                <div className="flex flex-col items-start justify-center">
+                  <span className="font-medium text-base">Meru Bank</span>
+                  <span className="text-xs text-white/60">
+                    Fast transfers with zero fees
+                  </span>
+                </div>
+                <ChevronRight className="ml-auto h-5 w-5 text-[#c46be3]" />
               </Button>
 
               <div className="text-center text-xs text-white/70">
                 <p>
-                  Bank transfers typically take 1-3 business days to process.{" "}
-                  <a href="#" className="text-[#0291fc] hover:underline">
+                  Meru Bank transfers are processed instantly with zero fees.{" "}
+                  <a
+                    href="https://getmeru.com/"
+                    className="text-[#0291fc] hover:underline"
+                  >
                     Learn more <ExternalLink className="inline h-3 w-3" />
                   </a>
                 </p>

@@ -106,7 +106,7 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                 value="crypto"
                 className="data-[state=active]:bg-white/10 text-white font-medium text-sm py-1.5"
               >
-                Crypto Withdrawal
+                Crypto Withdraw
               </TabsTrigger>
               <TabsTrigger
                 value="bank"
@@ -188,7 +188,7 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                     htmlFor="withdraw-address"
                     className="text-white/70 text-sm"
                   >
-                    Withdrawal Address
+                    Withdraw
                   </Label>
                   <TooltipProvider>
                     <Tooltip>

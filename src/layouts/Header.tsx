@@ -56,7 +56,7 @@ export function Header({ setIsMobileMenuOpen }: HeaderProps) {
             <Button
               variant="outline"
               size="sm"
-              className="bg-gradient-to-r from-[#0291fc] to-[#c46be3] border-0 text-white hover:from-[#0080e6] hover:to-[#b35fd0] hidden sm:flex"
+              className="bg-gradient-to-r from-[#0291fc] hover:text-gray-200 to-[#c46be3] border-0 text-white hover:from-[#0080e6] hover:to-[#b35fd0] hidden sm:flex"
             >
               Connect Wallet
             </Button>
