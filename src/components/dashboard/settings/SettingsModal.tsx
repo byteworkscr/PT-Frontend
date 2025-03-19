@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { X, Moon, Sun, Eye, EyeOff } from "lucide-react";
+import { X, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import {
   Dialog,
@@ -21,8 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Image from "next/image";
-import { TokenIcon } from "@web3icons/react";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -30,10 +27,8 @@ interface SettingsModalProps {
 }
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
-  const [activeTab, setActiveTab] = useState("account");
-  const [darkMode, setDarkMode] = useState(true);
+  const [activeTab, setActiveTab] = useState("preferences");
   const [notifications, setNotifications] = useState(true);
-  const [twoFactorAuth, setTwoFactorAuth] = useState(false);
   const [language, setLanguage] = useState("en");
   const [currency, setCurrency] = useState("usd");
   const [showBalance, setShowBalance] = useState(true);
@@ -55,22 +50,16 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               </Button>
             </div>
             <DialogDescription className="text-white/70 text-sm">
-              Customize your experience and manage your account preferences
+              Customize your experience and manage your preferences
             </DialogDescription>
           </DialogHeader>
 
           <Tabs
-            defaultValue="account"
+            defaultValue="preferences"
             className="w-full"
             onValueChange={setActiveTab}
           >
-            <TabsList className="grid grid-cols-5 bg-black/30 border border-white/10 mx-4 rounded-md">
-              <TabsTrigger
-                value="account"
-                className="data-[state=active]:bg-white/10 text-white font-medium text-sm py-1.5"
-              >
-                Account
-              </TabsTrigger>
+            <TabsList className="grid grid-cols-3 bg-black/30 border border-white/10 mx-4 rounded-md">
               <TabsTrigger
                 value="appearance"
                 className="data-[state=active]:bg-white/10 text-white font-medium text-sm py-1.5"
@@ -90,88 +79,6 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 Preferences
               </TabsTrigger>
             </TabsList>
-
-            <TabsContent value="account" className="p-4 space-y-4">
-              <div className="space-y-4">
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="w-full md:w-1/2 space-y-1">
-                    <Label
-                      htmlFor="full-name"
-                      className="text-white/70 text-sm"
-                    >
-                      Full Name
-                    </Label>
-                    <Input
-                      id="full-name"
-                      defaultValue="John Doe"
-                      className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
-                    />
-                  </div>
-                  <div className="w-full md:w-1/2 space-y-1">
-                    <Label
-                      htmlFor="wallet-address"
-                      className="text-white/70 text-sm"
-                    >
-                      Wallet Address
-                    </Label>
-                    <Input
-                      id="wallet-address"
-                      defaultValue="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
-                      className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9 font-mono text-xs"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="w-full md:w-1/2 space-y-1">
-                    <Label htmlFor="phone" className="text-white/70 text-sm">
-                      Phone Number
-                    </Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="+1 (555) 123-4567"
-                      className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
-                    />
-                  </div>
-                  <div className="w-full md:w-1/2 space-y-1">
-                    <Label htmlFor="timezone" className="text-white/70 text-sm">
-                      Timezone
-                    </Label>
-                    <Select defaultValue="utc-8">
-                      <SelectTrigger className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9">
-                        <SelectValue placeholder="Select timezone" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-[#1B2735] border-white/10 text-white">
-                        <SelectItem value="utc-12">UTC-12:00</SelectItem>
-                        <SelectItem value="utc-8">UTC-08:00 (PST)</SelectItem>
-                        <SelectItem value="utc-5">UTC-05:00 (EST)</SelectItem>
-                        <SelectItem value="utc">UTC+00:00</SelectItem>
-                        <SelectItem value="utc+1">UTC+01:00</SelectItem>
-                        <SelectItem value="utc+8">UTC+08:00</SelectItem>
-                        <SelectItem value="utc+12">UTC+12:00</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <Label htmlFor="bio" className="text-white/70 text-sm">
-                    Bio
-                  </Label>
-                  <textarea
-                    id="bio"
-                    rows={3}
-                    placeholder="Tell us about yourself"
-                    className="w-full border-0 bg-black/20 rounded-md  border-white/10 text-white p-2 resize-none"
-                  ></textarea>
-                </div>
-              </div>
-
-              <Button className="w-full bg-gradient-to-r from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200 h-10">
-                Save Account Settings
-              </Button>
-            </TabsContent>
 
             <TabsContent value="appearance" className="p-4 space-y-4">
               <div className="space-y-4">
@@ -329,7 +236,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     Language
                   </Label>
                   <Select defaultValue={language} onValueChange={setLanguage}>
-                    <SelectTrigger className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9">
+                    <SelectTrigger className="border-0 bg-black/20 rounded-md border-white/10 text-white h-9">
                       <SelectValue placeholder="Select language" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#1B2735] border-white/10 text-white">
@@ -348,7 +255,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     Currency
                   </Label>
                   <Select defaultValue={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9">
+                    <SelectTrigger className="border-0 bg-black/20 rounded-md border-white/10 text-white h-9">
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#1B2735] border-white/10 text-white">
@@ -387,7 +294,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     Default Dashboard View
                   </Label>
                   <Select defaultValue="overview">
-                    <SelectTrigger className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9">
+                    <SelectTrigger className="border-0 bg-black/20 rounded-md border-white/10 text-white h-9">
                       <SelectValue placeholder="Select default view" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#1B2735] border-white/10 text-white">

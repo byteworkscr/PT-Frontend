@@ -1,11 +1,27 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Search, Bell, User, Star } from "lucide-react";
+import { Search, Bell, User, Star, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
-  setIsMobileMenuOpen: (isOpen: boolean) => void;
+  setIsMobileMenuOpen?: (isOpen: boolean) => void;
 }
 
-export function Header() {
+export function Header({ setIsMobileMenuOpen }: HeaderProps) {
+  const router = useRouter();
+  const [walletConnected, setWalletConnected] = useState(true);
+
+  const handleDisconnectWallet = () => {
+    setWalletConnected(false);
+    console.log("Wallet disconnected");
+  };
+
+  const navigateToSettings = () => {
+    router.push("/dashboard/profile");
+  };
+
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-white/10 bg-black/40 backdrop-blur-md px-4 sm:px-6">
       <div className="flex flex-1 items-center gap-4">
@@ -26,6 +42,26 @@ export function Header() {
           </div>
         </form>
         <div className="ml-auto flex items-center gap-2">
+          {walletConnected ? (
+            <Button
+              variant="outline"
+              size="sm"
+              className="bg-transparent border-white/10 text-white hover:bg-white/10 hover:text-gray-200 hidden sm:flex"
+              onClick={handleDisconnectWallet}
+            >
+              <LogOut className="h-3.5 w-3.5 mr-1.5" />
+              Disconnect Wallet
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              className="bg-gradient-to-r from-[#0291fc] to-[#c46be3] border-0 text-white hover:from-[#0080e6] hover:to-[#b35fd0] hidden sm:flex"
+            >
+              Connect Wallet
+            </Button>
+          )}
+
           <Button
             variant="outline"
             size="icon"
@@ -33,10 +69,12 @@ export function Header() {
           >
             <Bell className="h-4 w-4" />
           </Button>
+
           <Button
             variant="outline"
             size="icon"
             className="bg-transparent border-white/10 text-white hover:bg-white/10 hover:text-gray-200"
+            onClick={navigateToSettings}
           >
             <User className="h-4 w-4" />
           </Button>
