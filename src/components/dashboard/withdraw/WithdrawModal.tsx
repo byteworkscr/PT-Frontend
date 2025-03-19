@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowDown, X, ExternalLink, AlertCircle } from "lucide-react";
+import {
+  ArrowDown,
+  X,
+  ExternalLink,
+  AlertCircle,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -109,7 +115,7 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                 Crypto Withdraw
               </TabsTrigger>
               <TabsTrigger
-                value="bank"
+                value="transfer"
                 className="data-[state=active]:bg-white/10 text-white font-medium text-sm py-1.5"
               >
                 Bank Transfer
@@ -257,122 +263,37 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
               </Button>
             </TabsContent>
 
-            <TabsContent value="bank" className="p-4 space-y-4">
-              <div className="space-y-3">
-                <div className="space-y-1">
-                  <Label htmlFor="bank-name" className="text-white/70 text-sm">
-                    Bank Name
-                  </Label>
-                  <Input
-                    id="bank-name"
-                    placeholder="Enter your bank name"
-                    value={bankName}
-                    onChange={(e) => setBankName(e.target.value)}
-                    className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
+            <TabsContent value="transfer" className="p-4 space-y-4">
+              <Button className="relative flex w-full justify-start gap-4 p-6 bg-black/30 border-white/10 hover:bg-[#0291fc]/20 hover:border-[#0291fc]/30 text-white hover:text-gray-200 transition-all duration-200 rounded-md">
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-md border border-white/10 p-1"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #0291fc20, transparent)",
+                  }}
+                >
+                  <img
+                    src="/img/meru.png"
+                    alt="Meru Bank"
+                    className="h-10 w-10 object-contain"
                   />
                 </div>
-
-                <div className="space-y-1">
-                  <Label
-                    htmlFor="account-number"
-                    className="text-white/70 text-sm"
-                  >
-                    Account Number
-                  </Label>
-                  <Input
-                    id="account-number"
-                    placeholder="Enter your account number"
-                    value={accountNumber}
-                    onChange={(e) => setAccountNumber(e.target.value)}
-                    className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <Label
-                    htmlFor="routing-number"
-                    className="text-white/70 text-sm"
-                  >
-                    Routing Number
-                  </Label>
-                  <Input
-                    id="routing-number"
-                    placeholder="Enter your routing number"
-                    value={routingNumber}
-                    onChange={(e) => setRoutingNumber(e.target.value)}
-                    className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between">
-                    <Label
-                      htmlFor="bank-amount"
-                      className="text-white/70 text-sm"
-                    >
-                      Amount
-                    </Label>
-                    <span className="text-xs text-white/70">
-                      Available: $12,500.00
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 p-2 bg-black/20 rounded-md border border-white/10">
-                    <div className="flex items-center px-2 py-1 bg-black/30 border border-white/10 rounded-md text-white/70">
-                      $
-                    </div>
-                    <div className="flex-1">
-                      <Input
-                        id="bank-amount"
-                        type="number"
-                        min="0"
-                        max="12500"
-                        placeholder="0.00"
-                        value={bankAmount}
-                        onChange={(e) => setBankAmount(e.target.value)}
-                        className="border-0 bg-transparent text-base font-medium focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
-                      />
-                    </div>
-                  </div>
-                  {Number.parseFloat(bankAmount) > 12500 && (
-                    <p className="text-red-400 text-xs mt-1">
-                      Amount exceeds available balance
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div className="bg-black/20 rounded-md border border-white/10 p-3 space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-white/70">Processing Fee</span>
-                  <span>$25.00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/70">You Will Receive</span>
-                  <span>
-                    $
-                    {bankAmount && Number.parseFloat(bankAmount) > 0
-                      ? (Number.parseFloat(bankAmount) - 25).toFixed(2)
-                      : "0.00"}
+                <div className="flex flex-col items-start justify-center">
+                  <span className="font-medium text-base">Meru Bank</span>
+                  <span className="text-xs text-white/60">
+                    Fast transfers with zero fees
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-white/70">Estimated Arrival</span>
-                  <span>1-3 business days</span>
-                </div>
-              </div>
-
-              <Button
-                className="w-full bg-gradient-to-r from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200 h-10"
-                onClick={handleWithdraw}
-                disabled={!validateBankWithdrawal()}
-              >
-                Withdraw to Bank
+                <ChevronRight className="ml-auto h-5 w-5 text-[#c46be3]" />
               </Button>
 
               <div className="text-center text-xs text-white/70">
                 <p>
-                  Bank withdrawals typically take 1-3 business days to process.{" "}
-                  <a href="#" className="text-[#0291fc] hover:underline">
+                  Meru Bank transfers are processed instantly with zero fees.{" "}
+                  <a
+                    href="https://getmeru.com/"
+                    className="text-[#0291fc] hover:underline"
+                  >
                     Learn more <ExternalLink className="inline h-3 w-3" />
                   </a>
                 </p>
