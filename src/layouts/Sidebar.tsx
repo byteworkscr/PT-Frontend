@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { SettingsModal } from "@/components/dashboard/settings/SettingsModal";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Sidebar() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
@@ -23,16 +24,20 @@ export default function Sidebar() {
         <div className="flex h-14 items-center border-b border-white/10 px-4">
           <div className="flex items-center gap-2">
             <div className="relative flex items-center">
-              <Image
-                src="/img/logo.png"
-                alt="PolarisTrade Logo"
-                width={35}
-                height={35}
-                className="object-contain"
-                priority
-              />
+              <Link href="/dashboard" className="flex items-center gap-2">
+                <Image
+                  src="/img/logo.png"
+                  alt="PolarisTrade Logo"
+                  width={35}
+                  height={35}
+                  className="object-contain"
+                  priority
+                />
+                <span className="text-lg font-bold text-white">
+                  PolarisTrade
+                </span>
+              </Link>
             </div>
-            <span className="text-lg font-bold text-white">PolarisTrade</span>
           </div>
         </div>
         <nav className="flex-1 overflow-auto py-4">
