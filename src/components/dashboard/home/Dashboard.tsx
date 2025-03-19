@@ -50,16 +50,16 @@ export default function DashboardLayout() {
               </div>
               <div className="flex gap-2">
                 <Button
-                  onClick={() => setIsModalOpen(true)}
-                  className="bg-gradient-to-r mr-2 from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200"
-                >
-                  <Plus className="h-4 w-4" /> Add Funds
-                </Button>
-                <Button
                   className="bg-gradient-to-r mr-2 from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200"
                   onClick={() => setIsSwapModalOpen(true)}
                 >
                   <ArrowRightLeft className="h-4 w-4" /> Swap
+                </Button>
+                <Button
+                  onClick={() => setIsModalOpen(true)}
+                  className="bg-transparent border-white/10 border text-white hover:bg-white/10 hover:text-gray-200"
+                >
+                  <Plus className="h-4 w-4" /> Add Funds
                 </Button>
                 <Button
                   variant="outline"
