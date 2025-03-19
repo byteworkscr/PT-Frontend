@@ -39,7 +39,7 @@ export function CosmicWalletConnectModal({
     {
       name: "Stellar",
       icon: "/img/Stellar.png",
-      description: "Scan with WalletConnect to connect",
+      description: "Connect to your Stellar Wallet",
       color: "#3B99FC",
     },
     {
