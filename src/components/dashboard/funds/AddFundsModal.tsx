@@ -173,7 +173,7 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                       id="wallet-address"
                       value={currentWalletAddress}
                       readOnly
-                      className="flex-1 border-0 bg-black/30 rounded-md border border-white/10 text-white text-xs truncate h-9"
+                      className="flex-1 border-0 bg-black/30 rounded-md  border-white/10 text-white text-xs truncate h-9"
                     />
                     <Button
                       variant="outline"
@@ -216,7 +216,7 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                     <Input
                       id="bank-name"
                       placeholder="Enter your bank name"
-                      className="border-0 bg-black/20 rounded-md border border-white/10 text-white h-9"
+                      className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
                     />
                   </div>
 
@@ -230,7 +230,7 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                     <Input
                       id="account-number"
                       placeholder="Enter your account number"
-                      className="border-0 bg-black/20 rounded-md border border-white/10 text-white h-9"
+                      className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
                     />
                   </div>
 
@@ -244,7 +244,7 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                     <Input
                       id="routing-number"
                       placeholder="Enter your routing number"
-                      className="border-0 bg-black/20 rounded-md border border-white/10 text-white h-9"
+                      className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
                     />
                   </div>
 

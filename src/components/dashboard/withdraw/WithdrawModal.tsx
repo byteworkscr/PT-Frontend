@@ -1,0 +1,393 @@
+"use client";
+
+import { useState } from "react";
+import { ArrowDown, X, ExternalLink, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { tokens } from "@/lib/tokens";
+import { TokenIcon } from "@web3icons/react";
+import { TokenSelector } from "@/components/TokenSelector";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+interface WithdrawModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
+  const [activeTab, setActiveTab] = useState("crypto");
+  const [selectedToken, setSelectedToken] = useState(
+    tokens.find((token) => token.symbol === "BTC") || tokens[0]
+  );
+  const [amount, setAmount] = useState("");
+  const [withdrawAddress, setWithdrawAddress] = useState("");
+  const [isTokenSelectorOpen, setIsTokenSelectorOpen] = useState(false);
+  const [bankName, setBankName] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [routingNumber, setRoutingNumber] = useState("");
+  const [bankAmount, setBankAmount] = useState("");
+
+  // Calculate max amount (90% of balance to account for fees)
+  const maxAmount = (selectedToken.balance * 0.9).toFixed(
+    selectedToken.symbol === "BTC" || selectedToken.symbol === "ETH" ? 8 : 2
+  );
+
+  const handleSetMaxAmount = () => {
+    setAmount(maxAmount);
+  };
+
+  const validateCryptoWithdrawal = () => {
+    return (
+      amount !== "" &&
+      Number.parseFloat(amount) > 0 &&
+      Number.parseFloat(amount) <= selectedToken.balance &&
+      withdrawAddress.trim() !== ""
+    );
+  };
+
+  const validateBankWithdrawal = () => {
+    return (
+      bankName.trim() !== "" &&
+      accountNumber.trim() !== "" &&
+      routingNumber.trim() !== "" &&
+      bankAmount !== "" &&
+      Number.parseFloat(bankAmount) > 0
+    );
+  };
+
+  const handleWithdraw = () => {
+    // In a real app, this would handle the withdrawal process
+    console.log("Processing withdrawal...");
+    onClose();
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-md p-0 overflow-hidden border-white/10 bg-gradient-to-b from-[#1B2735] to-[#090A0F] text-white">
+        <div className="relative z-10 bg-black/40 backdrop-blur-md overflow-hidden">
+          <DialogHeader className="p-4 pb-2">
+            <div className="flex justify-between items-center">
+              <DialogTitle className="text-xl">Withdraw Funds</DialogTitle>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white/70 hover:text-white hover:bg-white/10"
+                onClick={onClose}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <DialogDescription className="text-white/70 text-sm">
+              Withdraw your funds to a crypto wallet or bank account
+            </DialogDescription>
+          </DialogHeader>
+
+          <Tabs
+            defaultValue="crypto"
+            className="w-full"
+            onValueChange={setActiveTab}
+          >
+            <TabsList className="grid grid-cols-2 bg-black/30 border border-white/10 mx-4 rounded-md">
+              <TabsTrigger
+                value="crypto"
+                className="data-[state=active]:bg-white/10 text-white font-medium text-sm py-1.5"
+              >
+                Crypto Withdrawal
+              </TabsTrigger>
+              <TabsTrigger
+                value="bank"
+                className="data-[state=active]:bg-white/10 text-white font-medium text-sm py-1.5"
+              >
+                Bank Transfer
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="crypto" className="p-4 space-y-4">
+              <div className="flex justify-between items-start">
+                <div className="space-y-1">
+                  <Label className="text-white/70 text-sm">Select Asset</Label>
+                  <Button
+                    variant="outline"
+                    className="w-[120px] justify-between bg-black/30 border-white/10 text-white hover:bg-white/10 hover:text-gray-200 h-9"
+                    onClick={() => setIsTokenSelectorOpen(true)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 rounded-full bg-black/30 flex items-center justify-center overflow-hidden">
+                        <TokenIcon
+                          symbol={selectedToken.iconSymbol}
+                          size={16}
+                        />
+                      </div>
+                      <span className="text-sm">{selectedToken.symbol}</span>
+                    </div>
+                    <ArrowDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
+                  </Button>
+                </div>
+                <div className="text-right">
+                  <span className="text-white/70 text-sm">Available: </span>
+                  <span className="text-sm">
+                    {selectedToken.balance} {selectedToken.symbol}
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <Label className="text-white/70 text-sm">Amount</Label>
+                  <Button
+                    variant="link"
+                    className="text-xs text-[#0291fc] p-0 h-auto"
+                    onClick={handleSetMaxAmount}
+                  >
+                    Max: {maxAmount} {selectedToken.symbol}
+                  </Button>
+                </div>
+                <div className="flex items-center gap-2 p-2 bg-black/20 rounded-md border border-white/10">
+                  <div className="flex-1">
+                    <Input
+                      type="number"
+                      min="0"
+                      max={selectedToken.balance.toString()}
+                      placeholder="0.00"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      className="border-0 bg-transparent text-base font-medium focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
+                    />
+                  </div>
+                  <div className="flex items-center gap-1 bg-black/30 px-2 py-1 rounded-md">
+                    <div className="w-4 h-4 rounded-full bg-black/30 flex items-center justify-center overflow-hidden">
+                      <TokenIcon symbol={selectedToken.iconSymbol} size={14} />
+                    </div>
+                    <span className="text-sm">{selectedToken.symbol}</span>
+                  </div>
+                </div>
+                {Number.parseFloat(amount) > selectedToken.balance && (
+                  <p className="text-red-400 text-xs mt-1">
+                    Amount exceeds available balance
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex justify-between items-center">
+                  <Label
+                    htmlFor="withdraw-address"
+                    className="text-white/70 text-sm"
+                  >
+                    Withdrawal Address
+                  </Label>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-5 w-5 text-white/70 hover:text-white"
+                        >
+                          <AlertCircle className="h-3 w-3" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>
+                          Make sure this is the correct {selectedToken.symbol}{" "}
+                          address
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+                <Input
+                  id="withdraw-address"
+                  placeholder={`Enter your ${selectedToken.symbol} address`}
+                  value={withdrawAddress}
+                  onChange={(e) => setWithdrawAddress(e.target.value)}
+                  className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
+                />
+                <p className="text-xs text-white/70 mt-1">
+                  Double-check your address. Withdrawals to incorrect addresses
+                  cannot be recovered.
+                </p>
+              </div>
+
+              <div className="bg-black/20 rounded-md border border-white/10 p-3 space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-white/70">Network Fee</span>
+                  <span>~0.0005 {selectedToken.symbol}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white/70">You Will Receive</span>
+                  <span>
+                    {amount && Number.parseFloat(amount) > 0
+                      ? (Number.parseFloat(amount) - 0.0005).toFixed(
+                          selectedToken.symbol === "BTC" ||
+                            selectedToken.symbol === "ETH"
+                            ? 8
+                            : 2
+                        )
+                      : "0.00"}{" "}
+                    {selectedToken.symbol}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white/70">Estimated Arrival</span>
+                  <span>~30 minutes</span>
+                </div>
+              </div>
+
+              <Button
+                className="w-full bg-gradient-to-r from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200 h-10"
+                onClick={handleWithdraw}
+                disabled={!validateCryptoWithdrawal()}
+              >
+                Withdraw {selectedToken.symbol}
+              </Button>
+            </TabsContent>
+
+            <TabsContent value="bank" className="p-4 space-y-4">
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <Label htmlFor="bank-name" className="text-white/70 text-sm">
+                    Bank Name
+                  </Label>
+                  <Input
+                    id="bank-name"
+                    placeholder="Enter your bank name"
+                    value={bankName}
+                    onChange={(e) => setBankName(e.target.value)}
+                    className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <Label
+                    htmlFor="account-number"
+                    className="text-white/70 text-sm"
+                  >
+                    Account Number
+                  </Label>
+                  <Input
+                    id="account-number"
+                    placeholder="Enter your account number"
+                    value={accountNumber}
+                    onChange={(e) => setAccountNumber(e.target.value)}
+                    className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <Label
+                    htmlFor="routing-number"
+                    className="text-white/70 text-sm"
+                  >
+                    Routing Number
+                  </Label>
+                  <Input
+                    id="routing-number"
+                    placeholder="Enter your routing number"
+                    value={routingNumber}
+                    onChange={(e) => setRoutingNumber(e.target.value)}
+                    className="border-0 bg-black/20 rounded-md  border-white/10 text-white h-9"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex justify-between">
+                    <Label
+                      htmlFor="bank-amount"
+                      className="text-white/70 text-sm"
+                    >
+                      Amount
+                    </Label>
+                    <span className="text-xs text-white/70">
+                      Available: $12,500.00
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 p-2 bg-black/20 rounded-md border border-white/10">
+                    <div className="flex items-center px-2 py-1 bg-black/30 border border-white/10 rounded-md text-white/70">
+                      $
+                    </div>
+                    <div className="flex-1">
+                      <Input
+                        id="bank-amount"
+                        type="number"
+                        min="0"
+                        max="12500"
+                        placeholder="0.00"
+                        value={bankAmount}
+                        onChange={(e) => setBankAmount(e.target.value)}
+                        className="border-0 bg-transparent text-base font-medium focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
+                      />
+                    </div>
+                  </div>
+                  {Number.parseFloat(bankAmount) > 12500 && (
+                    <p className="text-red-400 text-xs mt-1">
+                      Amount exceeds available balance
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-black/20 rounded-md border border-white/10 p-3 space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-white/70">Processing Fee</span>
+                  <span>$25.00</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white/70">You Will Receive</span>
+                  <span>
+                    $
+                    {bankAmount && Number.parseFloat(bankAmount) > 0
+                      ? (Number.parseFloat(bankAmount) - 25).toFixed(2)
+                      : "0.00"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white/70">Estimated Arrival</span>
+                  <span>1-3 business days</span>
+                </div>
+              </div>
+
+              <Button
+                className="w-full bg-gradient-to-r from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200 h-10"
+                onClick={handleWithdraw}
+                disabled={!validateBankWithdrawal()}
+              >
+                Withdraw to Bank
+              </Button>
+
+              <div className="text-center text-xs text-white/70">
+                <p>
+                  Bank withdrawals typically take 1-3 business days to process.{" "}
+                  <a href="#" className="text-[#0291fc] hover:underline">
+                    Learn more <ExternalLink className="inline h-3 w-3" />
+                  </a>
+                </p>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </DialogContent>
+
+      <TokenSelector
+        isOpen={isTokenSelectorOpen}
+        onClose={() => setIsTokenSelectorOpen(false)}
+        onSelectToken={setSelectedToken}
+        excludeTokenId=""
+      />
+    </Dialog>
+  );
+}

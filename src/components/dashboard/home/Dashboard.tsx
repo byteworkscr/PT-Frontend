@@ -26,10 +26,12 @@ import { RecentTransactions } from "./RecentTransactions";
 import BackgroundAnimation from "@/components/BackgroundAnimation";
 import { SwapModal } from "../swap/SwapModal";
 import { AddFundsModal } from "../funds/AddFundsModal";
+import { WithdrawModal } from "../withdraw/WithdrawModal";
 
 export default function DashboardLayout() {
   const [isSwapModalOpen, setIsSwapModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-black">
@@ -61,6 +63,7 @@ export default function DashboardLayout() {
                 </Button>
                 <Button
                   variant="outline"
+                  onClick={() => setIsWithdrawModalOpen(true)}
                   className="bg-transparent border-white/10 text-white hover:bg-white/10 hover:text-gray-200"
                 >
                   <Wallet className="h-4 w-4" /> Withdraw
@@ -249,6 +252,10 @@ export default function DashboardLayout() {
       <AddFundsModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+      <WithdrawModal
+        isOpen={isWithdrawModalOpen}
+        onClose={() => setIsWithdrawModalOpen(false)}
       />
     </div>
   );
