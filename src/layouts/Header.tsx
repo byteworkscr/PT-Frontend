@@ -6,10 +6,6 @@ import { Search, Bell, User, Star, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useWallet } from "@/components/auth/hooks/useWallet.hook";
 
-interface HeaderProps {
-  setIsMobileMenuOpen?: (isOpen: boolean) => void;
-}
-
 export function Header() {
   const router = useRouter();
   const [walletConnected, setWalletConnected] = useState(true);
