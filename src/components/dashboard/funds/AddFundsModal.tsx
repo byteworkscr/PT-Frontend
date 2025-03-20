@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import {
   ArrowDown,
   Copy,
@@ -31,15 +31,24 @@ interface AddFundsModalProps {
   onClose: () => void;
 }
 
+interface Token {
+  id: string;
+  name: string;
+  symbol: string;
+  balance: number;
+  value: number;
+  iconSymbol: string;
+  isStablecoin?: boolean;
+}
+
 export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
   const [activeTab, setActiveTab] = useState("deposit");
-  const [selectedToken, setSelectedToken] = useState(
-    tokens.find((token) => token.symbol === "SOL") || tokens[0]
-  );
+
+  const [selectedToken, setSelectedToken] = useState<Token>(tokens[0]);
+
   const [amount, setAmount] = useState("");
   const [copied, setCopied] = useState(false);
   const [isTokenSelectorOpen, setIsTokenSelectorOpen] = useState(false);
-  const [selectedBank, setSelectedBank] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const walletAddresses: Record<string, string> = {
@@ -50,31 +59,10 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
     USDC: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
   };
 
-  const banks = [
-    {
-      name: "Meru Bank",
-      icon: "/img/meru.png",
-      description: "Fast transfers with low fees",
-      color: "#0291fc",
-      accountNumber: "MERU1234567890",
-      routingNumber: "MERUBANK001",
-    },
-  ];
-
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(walletAddresses[selectedToken.symbol] || "");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleSelectBank = (bankName: string) => {
-    setSelectedBank(bankName);
-
-    if (bankName === "Meru Bank") {
-      const meruBank = banks.find((bank) => bank.name === "Meru Bank");
-      if (meruBank) {
-      }
-    }
   };
 
   const currentWalletAddress = walletAddresses[selectedToken.symbol] || "";
@@ -102,9 +90,9 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
           </DialogHeader>
 
           <Tabs
-            defaultValue="deposit"
+            value={activeTab}
+            onValueChange={(value) => setActiveTab(value)}
             className="w-full"
-            onValueChange={setActiveTab}
           >
             <TabsList className="grid grid-cols-2 bg-black/30 border border-white/10 mx-4 rounded-md">
               <TabsTrigger
@@ -240,7 +228,7 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                 className="w-full bg-gradient-to-r from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200 h-10"
                 onClick={onClose}
               >
-                I've Made My Deposit
+                I have Made My Deposit
               </Button>
             </TabsContent>
 
@@ -287,7 +275,7 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
       <TokenSelector
         isOpen={isTokenSelectorOpen}
         onClose={() => setIsTokenSelectorOpen(false)}
-        onSelectToken={setSelectedToken}
+        onSelectToken={(token) => setSelectedToken(token as Token)}
         excludeTokenId=""
       />
     </Dialog>

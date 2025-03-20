@@ -67,7 +67,6 @@ export default function UserProfilePage() {
 
   const handleSaveProfile = () => {
     setEditMode(false);
-    // Here you would typically save the data to your backend
   };
 
   const transactions = [
@@ -166,7 +165,6 @@ export default function UserProfilePage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Profile Information */}
             <div className="lg:col-span-1 space-y-6">
               <Card className="bg-black/40 backdrop-blur-md border-white/10 text-white overflow-hidden">
                 <CardHeader className="pb-2">
@@ -197,7 +195,7 @@ export default function UserProfilePage() {
                       <span className="text-sm text-white/70 font-mono truncate">
                         {userData.walletAddress.substring(0, 6)}...
                         {userData.walletAddress.substring(
-                          userData.walletAddress.length - 4
+                          userData.walletAddress.length - 4,
                         )}
                       </span>
                       <button
@@ -283,10 +281,9 @@ export default function UserProfilePage() {
               </Card>
             </div>
 
-            {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               <Tabs
-                defaultValue="overview"
+                value={activeTab}
                 className="w-full"
                 onValueChange={setActiveTab}
               >
@@ -382,8 +379,8 @@ export default function UserProfilePage() {
                                       tx.type === "deposit"
                                         ? "bg-green-500/20"
                                         : tx.type === "withdraw"
-                                        ? "bg-red-500/20"
-                                        : "bg-blue-500/20"
+                                          ? "bg-red-500/20"
+                                          : "bg-blue-500/20"
                                     }`}
                                   >
                                     {tx.type === "deposit" ? (
@@ -414,8 +411,8 @@ export default function UserProfilePage() {
                                     {tx.type === "deposit"
                                       ? "+"
                                       : tx.type === "withdraw"
-                                      ? "-"
-                                      : ""}
+                                        ? "-"
+                                        : ""}
                                     {tx.amount} {tx.asset}
                                   </div>
                                   <div className="text-xs text-white/70">
@@ -532,8 +529,8 @@ export default function UserProfilePage() {
                                         tx.type === "deposit"
                                           ? "bg-green-500/20"
                                           : tx.type === "withdraw"
-                                          ? "bg-red-500/20"
-                                          : "bg-blue-500/20"
+                                            ? "bg-red-500/20"
+                                            : "bg-blue-500/20"
                                       }`}
                                     >
                                       {tx.type === "deposit" ? (
@@ -591,8 +588,8 @@ export default function UserProfilePage() {
                                       tx.status === "completed"
                                         ? "bg-green-500/20 text-green-400 border-green-500/30"
                                         : tx.status === "pending"
-                                        ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-                                        : "bg-red-500/20 text-red-400 border-red-500/30"
+                                          ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+                                          : "bg-red-500/20 text-red-400 border-red-500/30"
                                     }`}
                                   >
                                     {tx.status}

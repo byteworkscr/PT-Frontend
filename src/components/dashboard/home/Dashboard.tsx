@@ -5,7 +5,6 @@ import {
   ArrowRightLeft,
   DollarSign,
   Plus,
-  Sidebar,
   TrendingUp,
   Wallet,
 } from "lucide-react";
@@ -45,7 +44,7 @@ export default function DashboardLayout() {
                   Welcome back, John
                 </h1>
                 <p className="text-white/70">
-                  Here's what's happening with your investments today.
+                  Here is whats happening with your investments today.
                 </p>
               </div>
               <div className="flex gap-2">

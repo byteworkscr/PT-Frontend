@@ -94,7 +94,7 @@ export default function EnhancedHeroWithStars() {
           0,
           star.x,
           star.y,
-          pulseSize * 2
+          pulseSize * 2,
         );
         gradient.addColorStop(0, star.color);
         gradient.addColorStop(1, "transparent");

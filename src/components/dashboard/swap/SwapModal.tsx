@@ -3,14 +3,7 @@
 import { useState } from "react";
 import { ArrowDown, Info, RefreshCw, Settings, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Tooltip,
@@ -33,9 +26,18 @@ interface SwapModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
+interface Token {
+  id: string;
+  name: string;
+  symbol: string;
+  balance: number;
+  value: number;
+  iconSymbol: string;
+  isStablecoin?: boolean;
+}
 
 export function SwapModal({ open, onOpenChange }: SwapModalProps) {
-  const [fromToken, setFromToken] = useState(tokens[0]);
+  const [fromToken, setFromToken] = useState<Token>(tokens[0]);
   const [toToken, setToToken] = useState(tokens[2]);
 
   const [fromAmount, setFromAmount] = useState("1.0");
@@ -240,14 +242,14 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
       <TokenSelector
         isOpen={isFromSelectorOpen}
         onClose={() => setIsFromSelectorOpen(false)}
-        onSelectToken={setFromToken}
+        onSelectToken={(token) => setFromToken(token as Token)}
         excludeTokenId={toToken.id}
       />
 
       <TokenSelector
         isOpen={isToSelectorOpen}
         onClose={() => setIsToSelectorOpen(false)}
-        onSelectToken={setToToken}
+        onSelectToken={(token) => setFromToken(token as Token)}
         excludeTokenId={fromToken.id}
       />
     </Dialog>

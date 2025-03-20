@@ -12,10 +12,18 @@ import { Input } from "@/components/ui/input";
 import { tokens } from "@/lib/tokens";
 import { TokenIcon } from "@web3icons/react";
 
+interface Token {
+  id: string;
+  name: string;
+  symbol: string;
+  balance: number;
+  iconSymbol: string;
+}
+
 interface TokenSelectorProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectToken: (token: any) => void;
+  onSelectToken: (token: Token) => void;
   excludeTokenId?: string;
 }
 
@@ -32,7 +40,7 @@ export function TokenSelector({
     .filter(
       (token) =>
         token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+        token.symbol.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
   return (
@@ -77,7 +85,7 @@ export function TokenSelector({
 
           {filteredTokens.length === 0 && (
             <div className="text-center py-4 text-white/50">
-              No tokens found matching "{searchQuery}"
+              No tokens found matching &quot;{searchQuery}&quot;
             </div>
           )}
         </div>

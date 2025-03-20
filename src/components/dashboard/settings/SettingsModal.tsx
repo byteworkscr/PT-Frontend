@@ -55,9 +55,9 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           </DialogHeader>
 
           <Tabs
-            defaultValue="preferences"
-            className="w-full"
+            value={activeTab}
             onValueChange={setActiveTab}
+            className="w-full"
           >
             <TabsList className="grid grid-cols-3 bg-black/30 border border-white/10 mx-4 rounded-md">
               <TabsTrigger

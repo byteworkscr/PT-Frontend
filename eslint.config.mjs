@@ -13,4 +13,9 @@ export default [
   {
     ignores: ["node_modules", "dist", "build", ".next"],
   },
+  {
+    rules: {
+      "react/react-in-jsx-scope": "off",
+    },
+  },
 ];
