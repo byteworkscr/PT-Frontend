@@ -10,4 +10,7 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+  {
+    ignores: ["node_modules", "dist", "build", ".next"],
+  },
 ];
