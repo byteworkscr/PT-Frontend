@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+import { useWallet } from "@/components/auth/hooks/useWallet.hook";
 
 interface CosmicWalletConnectModalProps {
   isOpen: boolean;
@@ -22,17 +23,25 @@ export function CosmicWalletConnectModal({
   isOpen,
   onClose,
 }: CosmicWalletConnectModalProps) {
+  const { handleConnect } = useWallet();
   const [connecting, setConnecting] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const handleConnect = (walletName: string) => {
-    setConnecting(true);
-    setSelectedWallet(walletName);
-
-    setTimeout(() => {
+  const handleConnectClick = async (walletName: string) => {
+    try {
+      setConnecting(true);
+      if (walletName === "Stellar") {
+        await handleConnect(); // Conectamos a la billetera Stellar
+      }
+      onClose(); // Cierra el modal después de la conexión
+    } catch (error) {
+      setErrorMessage("Error connecting to wallet.");
+      console.error(error);
+    } finally {
       setConnecting(false);
-    }, 1500);
+    }
   };
 
   const wallets = [
@@ -131,9 +140,8 @@ export function CosmicWalletConnectModal({
             <DialogDescription className="text-white/70">
               Connect your wallet to access the investment universe
             </DialogDescription>
-            <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+            <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
               <X className="h-4 w-4 text-white" />
-              <span className="sr-only">Close</span>
             </DialogClose>
           </DialogHeader>
 
@@ -147,13 +155,19 @@ export function CosmicWalletConnectModal({
               </AlertDescription>
             </Alert>
 
+            {errorMessage && (
+              <Alert className="bg-red-500/20 border border-red-500/50 text-white">
+                <AlertTitle>{errorMessage}</AlertTitle>
+              </Alert>
+            )}
+
             <div className="space-y-2">
               {wallets.map((wallet) => (
                 <Button
                   key={wallet.name}
                   variant="outline"
                   className="relative flex w-full justify-start gap-4 p-6 bg-black/20 border-white/10 hover:bg-[#0291fc]/10 hover:border-[#0291fc]/30 text-white hover:text-gray-200 transition-all duration-200"
-                  onClick={() => handleConnect(wallet.name)}
+                  onClick={() => handleConnectClick(wallet.name)} // Invocamos el handleConnectClick aquí
                   disabled={connecting}
                 >
                   <div
