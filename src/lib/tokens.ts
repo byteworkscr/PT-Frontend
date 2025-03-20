@@ -41,6 +41,6 @@ export const getTokenById = (id: string) => {
 
 export const getTokenBySymbol = (symbol: string) => {
   return tokens.find(
-    (token) => token.symbol.toLowerCase() === symbol.toLowerCase()
+    (token) => token.symbol.toLowerCase() === symbol.toLowerCase(),
   );
 };

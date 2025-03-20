@@ -34,22 +34,27 @@ interface WithdrawModalProps {
   onClose: () => void;
 }
 
+interface Token {
+  id: string;
+  name: string;
+  symbol: string;
+  balance: number;
+  value: number;
+  iconSymbol: string;
+  isStablecoin?: boolean;
+}
+
 export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
   const [activeTab, setActiveTab] = useState("crypto");
   const [selectedToken, setSelectedToken] = useState(
-    tokens.find((token) => token.symbol === "BTC") || tokens[0]
+    tokens.find((token) => token.symbol === "BTC") || tokens[0],
   );
   const [amount, setAmount] = useState("");
   const [withdrawAddress, setWithdrawAddress] = useState("");
   const [isTokenSelectorOpen, setIsTokenSelectorOpen] = useState(false);
-  const [bankName, setBankName] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [routingNumber, setRoutingNumber] = useState("");
-  const [bankAmount, setBankAmount] = useState("");
 
-  // Calculate max amount (90% of balance to account for fees)
   const maxAmount = (selectedToken.balance * 0.9).toFixed(
-    selectedToken.symbol === "BTC" || selectedToken.symbol === "ETH" ? 8 : 2
+    selectedToken.symbol === "BTC" || selectedToken.symbol === "ETH" ? 8 : 2,
   );
 
   const handleSetMaxAmount = () => {
@@ -65,18 +70,7 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
     );
   };
 
-  const validateBankWithdrawal = () => {
-    return (
-      bankName.trim() !== "" &&
-      accountNumber.trim() !== "" &&
-      routingNumber.trim() !== "" &&
-      bankAmount !== "" &&
-      Number.parseFloat(bankAmount) > 0
-    );
-  };
-
   const handleWithdraw = () => {
-    // In a real app, this would handle the withdrawal process
     console.log("Processing withdrawal...");
     onClose();
   };
@@ -103,7 +97,7 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
           </DialogHeader>
 
           <Tabs
-            defaultValue="crypto"
+            value={activeTab}
             className="w-full"
             onValueChange={setActiveTab}
           >
@@ -242,7 +236,7 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                           selectedToken.symbol === "BTC" ||
                             selectedToken.symbol === "ETH"
                             ? 8
-                            : 2
+                            : 2,
                         )
                       : "0.00"}{" "}
                     {selectedToken.symbol}
@@ -306,7 +300,7 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
       <TokenSelector
         isOpen={isTokenSelectorOpen}
         onClose={() => setIsTokenSelectorOpen(false)}
-        onSelectToken={setSelectedToken}
+        onSelectToken={(token) => setSelectedToken(token as Token)}
         excludeTokenId=""
       />
     </Dialog>

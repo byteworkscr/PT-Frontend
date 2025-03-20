@@ -47,8 +47,8 @@ export function RecentTransactions() {
                 transaction.type === "Buy"
                   ? "bg-green-500/20"
                   : transaction.type === "Sell"
-                  ? "bg-red-500/20"
-                  : "bg-blue-500/20"
+                    ? "bg-red-500/20"
+                    : "bg-blue-500/20"
               }`}
             >
               <span
@@ -56,8 +56,8 @@ export function RecentTransactions() {
                   transaction.type === "Buy"
                     ? "text-green-500"
                     : transaction.type === "Sell"
-                    ? "text-red-500"
-                    : "text-blue-500"
+                      ? "text-red-500"
+                      : "text-blue-500"
                 }`}
               >
                 {transaction.type.charAt(0)}
