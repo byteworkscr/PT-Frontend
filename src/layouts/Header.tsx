@@ -4,14 +4,23 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Search, Bell, User, Star, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useWallet } from "@/components/auth/hooks/useWallet.hook";
 
 export function Header() {
   const router = useRouter();
   const [walletConnected, setWalletConnected] = useState(true);
+  const { handleConnect, handleDisconnect } = useWallet();
 
   const handleDisconnectWallet = () => {
+    handleDisconnect();
     setWalletConnected(false);
     console.log("Wallet disconnected");
+  };
+
+  const handleConnectWallet = () => {
+    handleConnect();
+    setWalletConnected(true);
+    console.log("Wallet connected");
   };
 
   const navigateToSettings = () => {
@@ -53,6 +62,7 @@ export function Header() {
               variant="outline"
               size="sm"
               className="bg-gradient-to-r from-[#0291fc] hover:text-gray-200 to-[#c46be3] border-0 text-white hover:from-[#0080e6] hover:to-[#b35fd0] hidden sm:flex"
+              onClick={handleConnectWallet}
             >
               Connect Wallet
             </Button>
