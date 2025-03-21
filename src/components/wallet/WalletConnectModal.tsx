@@ -25,7 +25,7 @@ export function CosmicWalletConnectModal({
 }: CosmicWalletConnectModalProps) {
   const { handleConnect } = useWallet();
   const [connecting, setConnecting] = useState(false);
-  const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
+  const [selectedWallet] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
