@@ -1,14 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import {
-  ArrowDown,
-  Copy,
-  X,
-  ExternalLink,
-  Shield,
-  ChevronRight,
-} from "lucide-react";
+import { Copy, X, ExternalLink, Shield, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,7 +15,6 @@ import {
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { tokens } from "@/lib/tokens";
-import { TokenIcon } from "@web3icons/react";
 import { TokenSelector } from "@/components/TokenSelector";
 import { QRCodeSVG } from "qrcode.react";
 
@@ -46,26 +38,23 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
 
   const [selectedToken, setSelectedToken] = useState<Token>(tokens[0]);
 
-  const [amount, setAmount] = useState("");
   const [copied, setCopied] = useState(false);
   const [isTokenSelectorOpen, setIsTokenSelectorOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const walletAddresses: Record<string, string> = {
-    BTC: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
-    ETH: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-    SOL: "HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH",
-    USDT: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-    USDC: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-  };
-
   const handleCopyAddress = () => {
-    navigator.clipboard.writeText(walletAddresses[selectedToken.symbol] || "");
+    const walletData = JSON.parse(
+      localStorage.getItem("address-wallet") || "{}",
+    );
+    const currentWalletAddress = walletData.state?.address || "";
+    navigator.clipboard.writeText(currentWalletAddress);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const currentWalletAddress = walletAddresses[selectedToken.symbol] || "";
+  const currentWalletAddress =
+    JSON.parse(localStorage.getItem("address-wallet") || "{}").state?.address ||
+    "";
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -110,63 +99,6 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
             </TabsList>
 
             <TabsContent value="deposit" className="p-4 space-y-4">
-              <div className="flex justify-between items-start">
-                <div className="space-y-1">
-                  <Label className="text-white/70 text-sm">
-                    Select Cryptocurrency
-                  </Label>
-                  <Button
-                    variant="outline"
-                    className="w-[120px] justify-between bg-black/30 border-white/10 text-white hover:bg-white/10 hover:text-gray-200 h-9"
-                    onClick={() => setIsTokenSelectorOpen(true)}
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full bg-black/30 flex items-center justify-center overflow-hidden">
-                        <TokenIcon
-                          symbol={selectedToken.iconSymbol}
-                          size={16}
-                        />
-                      </div>
-                      <span className="text-sm">{selectedToken.symbol}</span>
-                    </div>
-                    <ArrowDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
-                  </Button>
-                </div>
-                <div className="text-right">
-                  <span className="text-white/70 text-sm">Balance: </span>
-                  <span className="text-sm">
-                    {selectedToken.balance} {selectedToken.symbol}
-                  </span>
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex justify-between">
-                  <Label className="text-white/70 text-sm">
-                    Expected Amount
-                  </Label>
-                  <span className="text-xs text-white/70">Optional</span>
-                </div>
-                <div className="flex items-center gap-2 p-2 bg-black/20 rounded-md border border-white/10">
-                  <div className="flex-1">
-                    <Input
-                      type="number"
-                      min="0"
-                      placeholder="0.00"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      className="border-0 bg-transparent text-base font-medium focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
-                    />
-                  </div>
-                  <div className="flex items-center gap-1 bg-black/30 px-2 py-1 rounded-md">
-                    <div className="w-4 h-4 rounded-full bg-black/30 flex items-center justify-center overflow-hidden">
-                      <TokenIcon symbol={selectedToken.iconSymbol} size={14} />
-                    </div>
-                    <span className="text-sm">{selectedToken.symbol}</span>
-                  </div>
-                </div>
-              </div>
-
               <Alert className="bg-black/30 border border-[#0291fc]/30 text-white">
                 <Shield className="h-4 w-4 text-[#0291fc]" />
                 <AlertTitle>Secure Deposit</AlertTitle>
@@ -242,7 +174,7 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                   }}
                 >
                   <img
-                    src="/img/meru.png"
+                    src="https://res.cloudinary.com/dfxes8tvx/image/upload/v1742517136/meru_xkk9ti.webp"
                     alt="Meru Bank"
                     className="h-10 w-10 object-contain"
                   />

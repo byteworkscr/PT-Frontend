@@ -268,7 +268,7 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                   }}
                 >
                   <img
-                    src="/img/meru.png"
+                    src="https://res.cloudinary.com/dfxes8tvx/image/upload/v1742517136/meru_xkk9ti.webp"
                     alt="Meru Bank"
                     className="h-10 w-10 object-contain"
                   />
