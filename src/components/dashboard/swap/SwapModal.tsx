@@ -1,16 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowDown, Info, RefreshCw, Settings, X } from "lucide-react";
+import { ArrowDown, Settings, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -18,42 +12,31 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { tokens } from "@/lib/tokens";
 import { TokenIcon } from "@web3icons/react";
 import { TokenSelector } from "../../TokenSelector";
+import useSwap from "@/hooks/useSwap";
 
 interface SwapModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-interface Token {
-  id: string;
-  name: string;
-  symbol: string;
-  balance: number;
-  value: number;
-  iconSymbol: string;
-  isStablecoin?: boolean;
-}
 
 export function SwapModal({ open, onOpenChange }: SwapModalProps) {
-  const [fromToken, setFromToken] = useState<Token>(tokens[0]);
-  const [toToken, setToToken] = useState(tokens[2]);
-
-  const [fromAmount, setFromAmount] = useState("1.0");
-  const [toAmount, setToAmount] = useState("0.000167");
+  const {
+    fromToken,
+    toToken,
+    fromAmount,
+    toAmount,
+    xlmToUsd,
+    setFromAmount,
+    setToAmount,
+    handleSwapTokens,
+    setFromToken,
+    setToToken,
+  } = useSwap();
 
   const [isFromSelectorOpen, setIsFromSelectorOpen] = useState(false);
   const [isToSelectorOpen, setIsToSelectorOpen] = useState(false);
-
-  const handleSwapTokens = () => {
-    const tempToken = fromToken;
-    setFromToken(toToken);
-    setToToken(tempToken);
-
-    setFromAmount(toAmount);
-    setToAmount(fromAmount);
-  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -90,7 +73,9 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
               <div className="flex justify-between text-sm">
                 <span className="text-white/70">From</span>
                 <span className="text-white/70">
-                  Balance: {fromToken.balance} {fromToken.symbol}
+                  Balance: {fromToken.balance.toFixed(2)} {fromToken.symbol}{" "}
+                  {xlmToUsd !== null &&
+                    `(~$${(fromToken.balance * xlmToUsd).toFixed(2)})`}
                 </span>
               </div>
 
@@ -116,7 +101,6 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
                     </div>
                     <span>{fromToken.symbol}</span>
                   </div>
-                  <ArrowDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </div>
             </div>
@@ -162,71 +146,7 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
                     </div>
                     <span>{toToken.symbol}</span>
                   </div>
-                  <ArrowDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center p-3 bg-black/20 rounded-lg text-sm">
-              <span className="text-white/70">Exchange Rate</span>
-              <div className="flex items-center gap-1">
-                <span>
-                  1 {fromToken.symbol} = {toAmount} {toToken.symbol}
-                </span>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-5 w-5 text-white/70 hover:text-white"
-                      >
-                        <RefreshCw className="h-3 w-3" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Refresh rate</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            </div>
-
-            <div className="space-y-2 p-3 bg-black/20 rounded-lg text-sm">
-              <div className="flex justify-between">
-                <span className="text-white/70">Slippage Tolerance</span>
-                <span>0.5%</span>
-              </div>
-
-              <div className="flex justify-between">
-                <div className="flex items-center gap-1">
-                  <span className="text-white/70">Estimated Fee</span>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-5 w-5 text-white/70 hover:text-white"
-                        >
-                          <Info className="h-3 w-3" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Fee charged for this transaction</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <span>0.3%</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span className="text-white/70">Minimum Received</span>
-                <span>
-                  {(Number.parseFloat(toAmount) * 0.995).toFixed(6)}{" "}
-                  {toToken.symbol}
-                </span>
               </div>
             </div>
           </CardContent>
@@ -242,14 +162,18 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
       <TokenSelector
         isOpen={isFromSelectorOpen}
         onClose={() => setIsFromSelectorOpen(false)}
-        onSelectToken={(token) => setFromToken(token as Token)}
+        onSelectToken={(token) =>
+          setFromToken({ ...token, value: token.balance || 0 })
+        }
         excludeTokenId={toToken.id}
       />
 
       <TokenSelector
         isOpen={isToSelectorOpen}
         onClose={() => setIsToSelectorOpen(false)}
-        onSelectToken={(token) => setFromToken(token as Token)}
+        onSelectToken={(token) =>
+          setToToken({ ...token, value: token.balance || 0 })
+        }
         excludeTokenId={fromToken.id}
       />
     </Dialog>
