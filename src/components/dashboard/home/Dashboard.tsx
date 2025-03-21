@@ -3,6 +3,7 @@
 import { useState } from "react";
 import {
   ArrowRightLeft,
+  BadgeDollarSign,
   DollarSign,
   Plus,
   TrendingUp,
@@ -16,9 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PortfolioOverview } from "./PortfolioOverview";
-import { AssetAllocation } from "./AssetAllocation";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { MarketTrends } from "./MarketTrends";
 import { QuickActions } from "./QuickActions";
 import { RecentTransactions } from "./RecentTransactions";
@@ -26,11 +25,13 @@ import BackgroundAnimation from "@/components/BackgroundAnimation";
 import { SwapModal } from "../swap/SwapModal";
 import { AddFundsModal } from "../funds/AddFundsModal";
 import { WithdrawModal } from "../withdraw/WithdrawModal";
+import useStellarBalance from "@/hooks/useStellarBalance";
 
 export default function DashboardLayout() {
   const [isSwapModalOpen, setIsSwapModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+  const balance = useStellarBalance();
 
   return (
     <div className="relative min-h-screen bg-black">
@@ -77,9 +78,13 @@ export default function DashboardLayout() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">$124,578.90</div>
+                  <div className="text-2xl font-bold">
+                    {balance
+                      ? `${parseFloat(balance).toFixed(2)} XLM`
+                      : "Loading..."}
+                  </div>
                   <div className="flex items-center mt-1 text-green-400 text-sm">
-                    <TrendingUp className="h-4 w-4 mr-1" /> +5.25%
+                    <BadgeDollarSign className="h-4 w-4 mr-1" /> Your Balance
                   </div>
                 </CardContent>
               </Card>
@@ -124,51 +129,7 @@ export default function DashboardLayout() {
               </Card>
             </div>
             <Tabs defaultValue="overview" className="space-y-4">
-              <TabsList className="bg-black/40 border border-white/10">
-                <TabsTrigger
-                  value="overview"
-                  className="data-[state=active]:bg-white/10 text-white"
-                >
-                  Overview
-                </TabsTrigger>
-                <TabsTrigger
-                  value="portfolio"
-                  className="data-[state=active]:bg-white/10 text-white"
-                >
-                  Portfolio
-                </TabsTrigger>
-                <TabsTrigger
-                  value="transactions"
-                  className="data-[state=active]:bg-white/10 text-white"
-                >
-                  Transactions
-                </TabsTrigger>
-                <TabsTrigger
-                  value="markets"
-                  className="data-[state=active]:bg-white/10 text-white"
-                >
-                  Markets
-                </TabsTrigger>
-              </TabsList>
               <TabsContent value="overview" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Card className="md:col-span-2 bg-black/40 backdrop-blur-md border-white/10 text-white">
-                    <CardHeader>
-                      <CardTitle>Portfolio Performance</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <PortfolioOverview />
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-black/40 backdrop-blur-md border-white/10 text-white">
-                    <CardHeader>
-                      <CardTitle>Asset Allocation</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <AssetAllocation />
-                    </CardContent>
-                  </Card>
-                </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Card className="bg-black/40 backdrop-blur-md border-white/10 text-white">
                     <CardHeader>
