@@ -12,6 +12,7 @@
     "eslint": "eslint --ext .js,.jsx,.ts,.tsx ."
   },
   "dependencies": {
+    "@cloudinary/react": "^1.14.1",
     "@creit.tech/stellar-wallets-kit": "^1.7.3",
     "@moonpay/moonpay-js": "^0.6.6",
     "@moonpay/moonpay-react": "^1.8.10",
