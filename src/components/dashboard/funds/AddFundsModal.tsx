@@ -155,13 +155,6 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                   </p>
                 </div>
               </div>
-
-              <Button
-                className="w-full bg-gradient-to-r from-[#0291fc] to-[#c46be3] hover:from-[#0080e6] hover:to-[#b35fd0] border-0 hover:text-gray-200 h-10"
-                onClick={onClose}
-              >
-                I have Made My Deposit
-              </Button>
             </TabsContent>
 
             <TabsContent value="transfer" className="p-4 space-y-4">
