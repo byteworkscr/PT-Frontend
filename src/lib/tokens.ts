@@ -15,7 +15,7 @@ export const tokens = [
     balance: 2.5,
     value: 7500,
     iconSymbol: "eth",
-    icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742518327/ETH_maj8bk.svg",
+    icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742518987/ETH_ucufuj.webp",
   },
   {
     id: "16",

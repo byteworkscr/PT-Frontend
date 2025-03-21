@@ -10,7 +10,6 @@ import {
   Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { SettingsModal } from "@/components/dashboard/settings/SettingsModal";
 import { useState } from "react";
 import Link from "next/link";

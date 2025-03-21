@@ -242,7 +242,7 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                   }}
                 >
                   <img
-                    src="https://res.cloudinary.com/dfxes8tvx/image/upload/v1742517136/meru_xkk9ti.webp"
+                    src="/img/meru.png"
                     alt="Meru Bank"
                     className="h-10 w-10 object-contain"
                   />
