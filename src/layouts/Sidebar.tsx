@@ -65,13 +65,15 @@ export default function Sidebar() {
                 <BarChart3 className="mr-2 h-4 w-4" />
                 Analytics
               </Button>
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-white hover:bg-white/10 hover:text-gray-200"
-              >
-                <LineChart className="mr-2 h-4 w-4" />
-                Markets
-              </Button>
+              <Link href="/dashboard/markets" passHref>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-white hover:bg-white/10 hover:text-gray-200"
+                >
+                  <LineChart className="mr-2 h-4 w-4" />
+                  Markets
+                </Button>
+              </Link>
             </div>
           </div>
           <div className="px-3 py-2">

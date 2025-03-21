@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     redirect("/");
   }
   return (
-    <div className="relative z-10 flex h-screen overflow-hidden">
+    <div className="relative flex h-screen overflow-hidden">
       <BackgroundAnimation />
       <Sidebar />
       <div className="flex-1 ">
