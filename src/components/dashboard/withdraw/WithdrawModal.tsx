@@ -41,20 +41,21 @@ interface Token {
   balance: number;
   value: number;
   iconSymbol: string;
+  icon: string;
   isStablecoin?: boolean;
 }
 
 export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
   const [activeTab, setActiveTab] = useState("crypto");
   const [selectedToken, setSelectedToken] = useState(
-    tokens.find((token) => token.symbol === "BTC") || tokens[0],
+    tokens.find((token) => token.symbol === "USDC") || tokens[0],
   );
   const [amount, setAmount] = useState("");
   const [withdrawAddress, setWithdrawAddress] = useState("");
   const [isTokenSelectorOpen, setIsTokenSelectorOpen] = useState(false);
 
   const maxAmount = (selectedToken.balance * 0.9).toFixed(
-    selectedToken.symbol === "BTC" || selectedToken.symbol === "ETH" ? 8 : 2,
+    selectedToken.symbol === "USDC" || selectedToken.symbol === "ETH" ? 8 : 2,
   );
 
   const handleSetMaxAmount = () => {
@@ -233,7 +234,7 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                   <span>
                     {amount && Number.parseFloat(amount) > 0
                       ? (Number.parseFloat(amount) - 0.0005).toFixed(
-                          selectedToken.symbol === "BTC" ||
+                          selectedToken.symbol === "USDC" ||
                             selectedToken.symbol === "ETH"
                             ? 8
                             : 2,

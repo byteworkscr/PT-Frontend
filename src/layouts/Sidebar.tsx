@@ -10,7 +10,6 @@ import {
   Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { SettingsModal } from "@/components/dashboard/settings/SettingsModal";
 import { useState } from "react";
 import Link from "next/link";
@@ -25,13 +24,12 @@ export default function Sidebar() {
           <div className="flex items-center gap-2">
             <div className="relative flex items-center">
               <Link href="/dashboard" className="flex items-center gap-2">
-                <Image
-                  src="/img/logo.png"
+                <img
+                  src="https://res.cloudinary.com/dfxes8tvx/image/upload/v1742517136/logo_mvmqsx.webp"
                   alt="PolarisTrade Logo"
                   width={35}
                   height={35}
                   className="object-contain"
-                  priority
                 />
                 <span className="text-lg font-bold text-white">
                   PolarisTrade

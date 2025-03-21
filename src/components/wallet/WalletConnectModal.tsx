@@ -33,9 +33,9 @@ export function CosmicWalletConnectModal({
     try {
       setConnecting(true);
       if (walletName === "Stellar") {
-        await handleConnect(); // Conectamos a la billetera Stellar
+        await handleConnect();
       }
-      onClose(); // Cierra el modal después de la conexión
+      onClose();
     } catch (error) {
       setErrorMessage("Error connecting to wallet.");
       console.error(error);
@@ -47,31 +47,31 @@ export function CosmicWalletConnectModal({
   const wallets = [
     {
       name: "Stellar",
-      icon: "/img/Stellar.png",
+      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742516910/Stellar_xycxeb.webp",
       description: "Connect to your Stellar Wallet",
       color: "#3B99FC",
     },
     {
       name: "Coinbase",
-      icon: "/img/Coinbase.webp",
+      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515970/CoinBase_x7avru.webp",
       description: "Connect to your Coinbase Wallet",
       color: "#0052FF",
     },
     {
       name: "MetaMask",
-      icon: "/img/MetaMask.webp",
+      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515971/MetaMask_q9xjdy.webp",
       description: "Connect to your MetaMask wallet",
       color: "#F6851B",
     },
     {
       name: "Argent",
-      icon: "/img/ArgentX.webp",
+      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515969/ArgentX_n74l1n.webp",
       description: "Connect to your Coinbase Wallet",
       color: "#0052FF",
     },
     {
       name: "All Wallets",
-      icon: "/img/more.png",
+      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742516910/more_bpiewk.webp",
       description: "View all available wallet options",
       color: "#0052FF",
     },
