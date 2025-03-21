@@ -14,8 +14,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { tokens } from "@/lib/tokens";
-import { TokenSelector } from "@/components/TokenSelector";
 import { QRCodeSVG } from "qrcode.react";
 
 interface AddFundsModalProps {
@@ -23,23 +21,10 @@ interface AddFundsModalProps {
   onClose: () => void;
 }
 
-interface Token {
-  id: string;
-  name: string;
-  symbol: string;
-  balance: number;
-  value: number;
-  iconSymbol: string;
-  isStablecoin?: boolean;
-}
-
 export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
   const [activeTab, setActiveTab] = useState("deposit");
 
-  const [selectedToken, setSelectedToken] = useState<Token>(tokens[0]);
-
   const [copied, setCopied] = useState(false);
-  const [isTokenSelectorOpen, setIsTokenSelectorOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const handleCopyAddress = () => {
@@ -103,8 +88,10 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                 <Shield className="h-4 w-4 text-[#0291fc]" />
                 <AlertTitle>Secure Deposit</AlertTitle>
                 <AlertDescription>
-                  Only send {selectedToken.symbol} to this address. Sending any
-                  other coin may result in permanent loss.
+                  Sending any other coin may result in permanent loss. Please
+                  ensure that you are sending only the token type supported by
+                  this wallet. Any other tokens sent to this address may not be
+                  recoverable.
                 </AlertDescription>
               </Alert>
 
@@ -149,10 +136,6 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
                       )}
                     </Button>
                   </div>
-                  <p className="text-xs text-white/70 mt-1">
-                    Send only {selectedToken.symbol} to this address. Sending
-                    any other coin may result in permanent loss.
-                  </p>
                 </div>
               </div>
             </TabsContent>
@@ -196,13 +179,6 @@ export function AddFundsModal({ isOpen, onClose }: AddFundsModalProps) {
           </Tabs>
         </div>
       </DialogContent>
-
-      <TokenSelector
-        isOpen={isTokenSelectorOpen}
-        onClose={() => setIsTokenSelectorOpen(false)}
-        onSelectToken={(token) => setSelectedToken(token as Token)}
-        excludeTokenId=""
-      />
     </Dialog>
   );
 }
