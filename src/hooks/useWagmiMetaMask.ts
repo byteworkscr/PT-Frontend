@@ -1,6 +1,12 @@
-import { useAccount, useBalance, useChainId, useConnect, useDisconnect } from 'wagmi';
-import { metaMask } from 'wagmi/connectors';
-import { useCallback, useEffect, useState } from 'react';
+import {
+  useAccount,
+  useBalance,
+  useChainId,
+  useConnect,
+  useDisconnect,
+} from "wagmi";
+import { metaMask } from "wagmi/connectors";
+import { useCallback, useEffect, useState } from "react";
 
 interface MetaMaskResult {
   success: boolean;
@@ -30,7 +36,7 @@ export const useWagmiMetaMask = () => {
   const { data: balanceData } = useBalance({
     address,
   });
-  
+
   const [metaMaskState, setMetaMaskState] = useState({
     isInstalled: false,
     isConnected: false,
@@ -42,11 +48,11 @@ export const useWagmiMetaMask = () => {
 
   // Check if MetaMask is installed
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const ethereum = (window as WindowWithEthereum).ethereum;
-      setMetaMaskState(prev => ({
+      setMetaMaskState((prev) => ({
         ...prev,
-        isInstalled: !!ethereum && !!ethereum.isMetaMask
+        isInstalled: !!ethereum && !!ethereum.isMetaMask,
       }));
     }
   }, []);
@@ -55,13 +61,13 @@ export const useWagmiMetaMask = () => {
   const getNetworkName = (chainId: number): string => {
     switch (chainId) {
       case 1:
-        return 'Ethereum Mainnet';
+        return "Ethereum Mainnet";
       case 11155111:
-        return 'Sepolia Testnet';
+        return "Sepolia Testnet";
       case 137:
-        return 'Polygon Mainnet';
+        return "Polygon Mainnet";
       case 80001:
-        return 'Mumbai Testnet';
+        return "Mumbai Testnet";
       default:
         return `Chain ID: ${chainId}`;
     }
@@ -72,40 +78,43 @@ export const useWagmiMetaMask = () => {
     if (isConnected && address && balanceData && chainId) {
       const networkName = getNetworkName(chainId);
       const chainIdHex = `0x${chainId.toString(16)}`;
-      
+
       setMetaMaskState({
         isInstalled: true,
         isConnected: true,
         address: address,
         balance: balanceData.formatted.substring(0, 6),
         chainId: chainIdHex,
-        network: networkName
+        network: networkName,
       });
-      
+
       // Store in localStorage
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('metamask-wallet', JSON.stringify({
-          state: {
-            address,
-            balance: balanceData.formatted.substring(0, 6),
-            chainId: chainIdHex,
-            network: networkName
-          }
-        }));
+      if (typeof window !== "undefined") {
+        localStorage.setItem(
+          "metamask-wallet",
+          JSON.stringify({
+            state: {
+              address,
+              balance: balanceData.formatted.substring(0, 6),
+              chainId: chainIdHex,
+              network: networkName,
+            },
+          }),
+        );
       }
     } else if (!isConnected) {
-      setMetaMaskState(prev => ({
+      setMetaMaskState((prev) => ({
         ...prev,
         isConnected: false,
         address: null,
         balance: null,
         chainId: null,
-        network: null
+        network: null,
       }));
-      
+
       // Remove from localStorage
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('metamask-wallet');
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("metamask-wallet");
       }
     }
   }, [isConnected, address, balanceData, chainId]);
@@ -115,10 +124,13 @@ export const useWagmiMetaMask = () => {
       await connect({ connector: metaMask() });
       return { success: true };
     } catch (error) {
-      console.error('Error connecting to MetaMask:', error);
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Failed to connect to MetaMask'
+      console.error("Error connecting to MetaMask:", error);
+      return {
+        success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to connect to MetaMask",
       };
     }
   }, [connect]);
@@ -131,6 +143,6 @@ export const useWagmiMetaMask = () => {
     ...metaMaskState,
     connectMetaMask,
     disconnectMetaMask,
-    isPending
+    isPending,
   };
 };

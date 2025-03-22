@@ -5,9 +5,9 @@ import { useWagmiMetaMask } from "@/hooks/useWagmiMetaMask";
 
 export function WalletInfo() {
   const { address, balance, network, isConnected } = useWagmiMetaMask();
-  
+
   if (!isConnected) return null;
-  
+
   return (
     <Card className="bg-black/40 border-white/10 text-white">
       <CardHeader className="pb-2">
@@ -21,12 +21,12 @@ export function WalletInfo() {
           <div className="flex justify-between items-center">
             <span className="text-white/70">Address</span>
             <span className="font-mono text-sm">
-              {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ''}
+              {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ""}
             </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-white/70">Balance</span>
-            <span>{balance ? `${balance} ETH` : ''}</span>
+            <span>{balance ? `${balance} ETH` : ""}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-white/70">Network</span>
@@ -34,11 +34,13 @@ export function WalletInfo() {
               {network}
             </span>
           </div>
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             className="w-full mt-2 bg-transparent border-white/10 text-white hover:bg-white/10"
-            onClick={() => window.open(`https://etherscan.io/address/${address}`, '_blank')}
+            onClick={() =>
+              window.open(`https://etherscan.io/address/${address}`, "_blank")
+            }
           >
             View on Explorer <ExternalLink className="ml-2 h-3 w-3" />
           </Button>

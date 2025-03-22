@@ -25,7 +25,8 @@ export function CosmicWalletConnectModal({
   onClose,
 }: CosmicWalletConnectModalProps) {
   const { handleConnect } = useWallet();
-  const { connectMetaMask, isInstalled: isMetaMaskInstalled } = useWagmiMetaMask();
+  const { connectMetaMask, isInstalled: isMetaMaskInstalled } =
+    useWagmiMetaMask();
   const [connecting, setConnecting] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -36,28 +37,34 @@ export function CosmicWalletConnectModal({
       setConnecting(true);
       setSelectedWallet(walletName);
       setErrorMessage(null);
-      
+
       if (walletName === "Stellar") {
         await handleConnect();
         onClose();
       } else if (walletName === "MetaMask") {
         if (!isMetaMaskInstalled) {
-          setErrorMessage("MetaMask is not installed. Please install MetaMask to continue.");
+          setErrorMessage(
+            "MetaMask is not installed. Please install MetaMask to continue.",
+          );
           return;
         }
-        
+
         const result = await connectMetaMask();
         if (result.success) {
           onClose();
         } else {
-          setErrorMessage(result.error || "Failed to connect to MetaMask. Please try again.");
+          setErrorMessage(
+            result.error || "Failed to connect to MetaMask. Please try again.",
+          );
         }
       } else {
         setErrorMessage(`${walletName} connection is not yet implemented.`);
       }
     } catch (error) {
       console.error(error);
-      setErrorMessage(`Error connecting to ${walletName}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setErrorMessage(
+        `Error connecting to ${walletName}: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     } finally {
       setConnecting(false);
       setSelectedWallet(null);
@@ -180,9 +187,9 @@ export function CosmicWalletConnectModal({
                 <AlertTitle>{errorMessage}</AlertTitle>
                 {errorMessage.includes("MetaMask is not installed") && (
                   <AlertDescription className="mt-2">
-                    <a 
-                      href="https://metamask.io/download/" 
-                      target="_blank" 
+                    <a
+                      href="https://metamask.io/download/"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="text-[#0291fc] hover:underline flex items-center gap-1"
                     >
