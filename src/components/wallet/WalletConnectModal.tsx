@@ -39,30 +39,36 @@ export function CosmicWalletConnectModal({
       setConnecting(true);
       setSelectedWallet(walletName);
       setErrorMessage(null);
-      
+
       if (walletName === "Stellar") {
         await handleConnect();
         onClose();
         router.push("/dashboard"); // Add this redirect
       } else if (walletName === "MetaMask") {
         if (!isMetaMaskInstalled) {
-          setErrorMessage("MetaMask is not installed. Please install MetaMask to continue.");
+          setErrorMessage(
+            "MetaMask is not installed. Please install MetaMask to continue.",
+          );
           return;
         }
-        
+
         const result = await connectMetaMask();
         if (result.success) {
           onClose();
           router.push("/dashboard"); // Add this redirect
         } else {
-          setErrorMessage(result.error || "Failed to connect to MetaMask. Please try again.");
+          setErrorMessage(
+            result.error || "Failed to connect to MetaMask. Please try again.",
+          );
         }
       } else {
         setErrorMessage(`${walletName} connection is not yet implemented.`);
       }
     } catch (error) {
       console.error(error);
-      setErrorMessage(`Error connecting to ${walletName}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setErrorMessage(
+        `Error connecting to ${walletName}: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     } finally {
       setConnecting(false);
       setSelectedWallet(null);

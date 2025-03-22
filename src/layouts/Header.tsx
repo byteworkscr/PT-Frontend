@@ -16,7 +16,7 @@ export function Header() {
   useEffect(() => {
     const stellarWallet = localStorage.getItem("address-wallet");
     const metamaskWallet = localStorage.getItem("metamask-wallet");
-    
+
     if (stellarWallet || metamaskWallet) {
       setWalletConnected(true);
     }
@@ -25,7 +25,7 @@ export function Header() {
   const handleDisconnectWallet = () => {
     handleDisconnect();
     // Also remove MetaMask wallet data
-    localStorage.removeItem('metamask-wallet');
+    localStorage.removeItem("metamask-wallet");
     setWalletConnected(false);
     console.log("Wallet disconnected");
   };
