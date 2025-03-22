@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { useWallet } from "@/components/auth/hooks/useWallet.hook";
 import { useWagmiMetaMask } from "@/hooks/useWagmiMetaMask";
-import { useRouter } from "next/navigation"; // Add this import
+import { useRouter } from "next/navigation";
 
 interface CosmicWalletConnectModalProps {
   isOpen: boolean;
@@ -32,7 +32,7 @@ export function CosmicWalletConnectModal({
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const router = useRouter(); // Add this
+  const router = useRouter();
 
   const handleConnectClick = async (walletName: string) => {
     try {
@@ -43,7 +43,7 @@ export function CosmicWalletConnectModal({
       if (walletName === "Stellar") {
         await handleConnect();
         onClose();
-        router.push("/dashboard"); // Add this redirect
+        router.push("/dashboard");
       } else if (walletName === "MetaMask") {
         if (!isMetaMaskInstalled) {
           setErrorMessage(
@@ -55,7 +55,7 @@ export function CosmicWalletConnectModal({
         const result = await connectMetaMask();
         if (result.success) {
           onClose();
-          router.push("/dashboard"); // Add this redirect
+          router.push("/dashboard");
         } else {
           setErrorMessage(
             result.error || "Failed to connect to MetaMask. Please try again.",
