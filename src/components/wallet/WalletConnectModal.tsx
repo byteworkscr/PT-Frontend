@@ -77,7 +77,7 @@ export function CosmicWalletConnectModal({
     }
   };
 
-  // -- Cleaned-up, merged wallet array:
+  // Wallets array WITHOUT Argent
   const wallets = [
     {
       name: "Stellar",
@@ -102,12 +102,6 @@ export function CosmicWalletConnectModal({
       icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515971/MetaMask_q9xjdy.webp",
       description: "Connect to your MetaMask wallet",
       color: "#F6851B",
-    },
-    {
-      name: "Argent",
-      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515969/ArgentX_n74l1n.webp",
-      description: "Connect to your Argent Wallet",
-      color: "#0052FF",
     },
     {
       name: "All Wallets",
