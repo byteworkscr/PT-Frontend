@@ -164,8 +164,8 @@ export default function UserProfilePage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-1 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-6 h-full">
+            <div className="lg:col-span-1 space-y-6 pb-5">
               <Card className="bg-black/40 backdrop-blur-md border-white/10 text-white overflow-hidden">
                 <CardHeader className="pb-2">
                   <CardTitle>Profile</CardTitle>
@@ -435,7 +435,7 @@ export default function UserProfilePage() {
                   </Card>
                 </TabsContent>
 
-                <TabsContent value="transactions" className="space-y-6">
+                <TabsContent value="transactions" className="space-y-6 pb-5">
                   <Card className="bg-black/40 backdrop-blur-md border-white/10 text-white">
                     <CardHeader>
                       <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
@@ -666,7 +666,7 @@ export default function UserProfilePage() {
 
                 <TabsContent
                   value="settings"
-                  className="space-y-6 overflow-auto"
+                  className="space-y-6 pb-5 overflow-auto"
                 >
                   <Card className="bg-black/40 backdrop-blur-md border-white/10 text-white">
                     <CardHeader>
@@ -675,7 +675,7 @@ export default function UserProfilePage() {
                         Manage your profile information and preferences
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="overflow-visible pb-8">
+                    <CardContent className="overflow-visible ">
                       <div className="space-y-6">
                         <div className="space-y-2">
                           <h3 className="text-sm font-medium">
