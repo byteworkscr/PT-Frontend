@@ -67,7 +67,9 @@ export function CosmicWalletConnectModal({
     } catch (error) {
       console.error(error);
       setErrorMessage(
-        `Error connecting to ${walletName}: ${error instanceof Error ? error.message : "Unknown error"}`,
+        `Error connecting to ${walletName}: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
       );
     } finally {
       setConnecting(false);
@@ -75,6 +77,7 @@ export function CosmicWalletConnectModal({
     }
   };
 
+  // -- Cleaned-up, merged wallet array:
   const wallets = [
     {
       name: "Stellar",
@@ -83,16 +86,22 @@ export function CosmicWalletConnectModal({
       color: "#3B99FC",
     },
     {
-      name: "MetaMask",
-      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515971/MetaMask_q9xjdy.webp",
-      description: "Connect to your MetaMask wallet",
-      color: "#F6851B",
+      name: "Starknet",
+      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742619452/starknet_x1099h.webp",
+      description: "Connect to your Starknet Wallet",
+      color: "#0052FF",
     },
     {
       name: "Coinbase",
       icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515970/CoinBase_x7avru.webp",
       description: "Connect to your Coinbase Wallet",
       color: "#0052FF",
+    },
+    {
+      name: "MetaMask",
+      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515971/MetaMask_q9xjdy.webp",
+      description: "Connect to your MetaMask wallet",
+      color: "#F6851B",
     },
     {
       name: "Argent",
