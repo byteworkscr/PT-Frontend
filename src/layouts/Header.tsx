@@ -5,14 +5,27 @@ import { Button } from "@/components/ui/button";
 import { Search, Bell, User, Star, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useWallet } from "@/components/auth/hooks/useWallet.hook";
+import { useEffect } from "react";
 
 export function Header() {
   const router = useRouter();
-  const [walletConnected, setWalletConnected] = useState(true);
+  const [walletConnected, setWalletConnected] = useState(false); // Changed default to false
   const { handleConnect, handleDisconnect } = useWallet();
+
+  // Check if any wallet is connected on component mount
+  useEffect(() => {
+    const stellarWallet = localStorage.getItem("address-wallet");
+    const metamaskWallet = localStorage.getItem("metamask-wallet");
+    
+    if (stellarWallet || metamaskWallet) {
+      setWalletConnected(true);
+    }
+  }, []);
 
   const handleDisconnectWallet = () => {
     handleDisconnect();
+    // Also remove MetaMask wallet data
+    localStorage.removeItem('metamask-wallet');
     setWalletConnected(false);
     console.log("Wallet disconnected");
   };
