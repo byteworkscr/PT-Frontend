@@ -52,6 +52,12 @@ export function CosmicWalletConnectModal({
       color: "#3B99FC",
     },
     {
+      name: "Starknet",
+      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742619452/starknet_x1099h.webp",
+      description: "Connect to your Starknet Wallet",
+      color: "#0052FF",
+    },
+    {
       name: "Coinbase",
       icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515970/CoinBase_x7avru.webp",
       description: "Connect to your Coinbase Wallet",
@@ -62,12 +68,6 @@ export function CosmicWalletConnectModal({
       icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515971/MetaMask_q9xjdy.webp",
       description: "Connect to your MetaMask wallet",
       color: "#F6851B",
-    },
-    {
-      name: "Argent",
-      icon: "https://res.cloudinary.com/dfxes8tvx/image/upload/v1742515969/ArgentX_n74l1n.webp",
-      description: "Connect to your Coinbase Wallet",
-      color: "#0052FF",
     },
     {
       name: "All Wallets",
