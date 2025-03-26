@@ -41,7 +41,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TokenIcon } from "@web3icons/react";
-import BackgroundAnimation from "@/components/BackgroundAnimation";
 
 export default function UserProfilePage() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -130,7 +129,6 @@ export default function UserProfilePage() {
 
   return (
     <div className="relative min-h-screen bg-black">
-      <BackgroundAnimation />
       <div className="relative z-10 h-screen overflow-auto">
         <div className="p-4 md:p-6 space-y-6 pb-20">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
