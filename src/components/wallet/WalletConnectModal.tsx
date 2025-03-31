@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { ChevronRight, X, Shield } from "lucide-react";
+import { ChevronRight, X, Shield, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -13,6 +13,8 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useWallet } from "@/components/auth/hooks/useWallet.hook";
+import { useWagmiMetaMask } from "@/hooks/useWagmiMetaMask";
+import { useRouter } from "next/navigation";
 
 interface CosmicWalletConnectModalProps {
   isOpen: boolean;
@@ -24,26 +26,58 @@ export function CosmicWalletConnectModal({
   onClose,
 }: CosmicWalletConnectModalProps) {
   const { handleConnect } = useWallet();
+  const { connectMetaMask, isInstalled: isMetaMaskInstalled } =
+    useWagmiMetaMask();
   const [connecting, setConnecting] = useState(false);
-  const [selectedWallet] = useState<string | null>(null);
+  const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const router = useRouter();
 
   const handleConnectClick = async (walletName: string) => {
     try {
       setConnecting(true);
+      setSelectedWallet(walletName);
+      setErrorMessage(null);
+
       if (walletName === "Stellar") {
         await handleConnect();
+        onClose();
+        router.push("/dashboard");
+      } else if (walletName === "MetaMask") {
+        if (!isMetaMaskInstalled) {
+          setErrorMessage(
+            "MetaMask is not installed. Please install MetaMask to continue.",
+          );
+          return;
+        }
+
+        const result = await connectMetaMask();
+        if (result.success) {
+          onClose();
+          router.push("/dashboard");
+        } else {
+          setErrorMessage(
+            result.error || "Failed to connect to MetaMask. Please try again.",
+          );
+        }
+      } else {
+        setErrorMessage(`${walletName} connection is not yet implemented.`);
       }
-      onClose();
     } catch (error) {
-      setErrorMessage("Error connecting to wallet.");
       console.error(error);
+      setErrorMessage(
+        `Error connecting to ${walletName}: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      );
     } finally {
       setConnecting(false);
+      setSelectedWallet(null);
     }
   };
 
+  // Wallets array WITHOUT Argent
   const wallets = [
     {
       name: "Stellar",
@@ -158,6 +192,18 @@ export function CosmicWalletConnectModal({
             {errorMessage && (
               <Alert className="bg-red-500/20 border border-red-500/50 text-white">
                 <AlertTitle>{errorMessage}</AlertTitle>
+                {errorMessage.includes("MetaMask is not installed") && (
+                  <AlertDescription className="mt-2">
+                    <a
+                      href="https://metamask.io/download/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#0291fc] hover:underline flex items-center gap-1"
+                    >
+                      Install MetaMask <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </AlertDescription>
+                )}
               </Alert>
             )}
 
@@ -167,7 +213,7 @@ export function CosmicWalletConnectModal({
                   key={wallet.name}
                   variant="outline"
                   className="relative flex w-full justify-start gap-4 p-6 bg-black/20 border-white/10 hover:bg-[#0291fc]/10 hover:border-[#0291fc]/30 text-white hover:text-gray-200 transition-all duration-200"
-                  onClick={() => handleConnectClick(wallet.name)} // Invocamos el handleConnectClick aquí
+                  onClick={() => handleConnectClick(wallet.name)}
                   disabled={connecting}
                 >
                   <div
