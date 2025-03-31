@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
 const BackgroundAnimation = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -54,7 +55,7 @@ const BackgroundAnimation = () => {
       pulseSpeed: 0.03 + Math.random() * 0.04,
     }));
 
-    const animate = () => {
+    const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
@@ -113,19 +114,29 @@ const BackgroundAnimation = () => {
           star.x = Math.random() * canvas.width;
         }
       });
-
-      requestAnimationFrame(animate);
     };
 
-    animate();
+    const loop = () => {
+      draw();
+      animationId = requestAnimationFrame(loop);
+    };
+
+    let animationId = requestAnimationFrame(loop);
 
     return () => {
+      cancelAnimationFrame(animationId);
       window.removeEventListener("resize", setCanvasDimensions);
     };
   }, []);
 
   return (
-    <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full" />
+    <motion.canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full h-full -z-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    />
   );
 };
 

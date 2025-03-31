@@ -21,7 +21,6 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { MarketTrends } from "./MarketTrends";
 import { QuickActions } from "./QuickActions";
 import { RecentTransactions } from "./RecentTransactions";
-import BackgroundAnimation from "@/components/BackgroundAnimation";
 import { SwapModal } from "../swap/SwapModal";
 import { AddFundsModal } from "../funds/AddFundsModal";
 import { WithdrawModal } from "../withdraw/WithdrawModal";
@@ -34,8 +33,7 @@ export default function DashboardLayout() {
   const balance = useStellarBalance();
 
   return (
-    <div className="relative min-h-screen bg-black">
-      <BackgroundAnimation />
+    <div className="relative min-h-screen ">
       <div className="relative z-10 flex h-screen overflow-hidden">
         <div className="flex-1 overflow-auto">
           <div className="p-4 md:p-6 space-y-6">
