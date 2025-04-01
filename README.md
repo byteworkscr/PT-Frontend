@@ -17,7 +17,7 @@ npm install
 Create a `.env` file with the required environment variables.
 
 ```bash
-npm run start:dev
+npm run dev
 ```
 
 ---
