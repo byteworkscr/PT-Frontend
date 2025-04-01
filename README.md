@@ -10,8 +10,11 @@ Connecting ecosystems like Starknet and Stellar, its backend uses NestJS and Pri
 
 ```bash
 git clone https://github.com/your-username/PolarisTrade.git
+
+```
 ```
 cd PolarisTrade
+```
 ```
 npm install
 ```
